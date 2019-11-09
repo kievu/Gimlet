@@ -4,7 +4,7 @@ import { sampleSize } from "lodash"
 import { Typography, Hidden } from "@material-ui/core"
 import styled from "@emotion/styled"
 
-import DrinkDeck from "../components/DrinkDeck"
+import { DrinkDeck } from "../components/DrinkDeck"
 import Layout from "../components/layout"
 import "../global.css"
 import Header from "../components/Header"
