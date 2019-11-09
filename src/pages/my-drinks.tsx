@@ -6,11 +6,95 @@ import {
   CardMedia,
   IconButton,
   Typography,
+  CardContent,
+  CardActions,
+  Collapse,
 } from "@material-ui/core"
 import DeleteIcon from "@material-ui/icons/Delete"
 import "../global.css"
 import Header from "../components/Header"
 import { getDrinks, removeDrink } from "../lib/drinksCache"
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore"
+import CloseIcon from "@material-ui/icons/Close"
+
+const CocktailCard = ({ drink, onRemove }) => {
+  const [expanded, setExpanded] = useState(false)
+
+  const handleExpandClick = () => {
+    setExpanded(!expanded)
+  }
+
+  const ingredients = []
+  for (let [key, value] of Object.entries(drink)) {
+    if (key.startsWith("strIngredient") && !!value) ingredients.push(value)
+  }
+
+  return (
+    <Card
+      key={drink.idDrink}
+      css={{
+        marginLeft: "auto",
+        marginRight: "auto",
+        maxWidth: 345,
+        marginBottom: 30,
+      }}
+    >
+      <CardHeader
+        title={drink.strDrink}
+        subheader={drink.strCategory}
+        action={
+          <IconButton
+            aria-label="remove cocktail"
+            onClick={() => onRemove(drink.idDrink)}
+          >
+            <CloseIcon />
+          </IconButton>
+        }
+      />
+      <CardMedia
+        image={drink.strDrinkThumb}
+        css={{
+          height: 0,
+          paddingTop: "56.25%",
+        }}
+      />
+
+      {/* <div>
+                  <IconButton onClick={() => onRemove(drink.idDrink)}>
+                    <DeleteIcon style={{ fontSize: 30 }} />
+                  </IconButton>
+                </div> */}
+      <CardActions disableSpacing>
+        <IconButton
+          css={{ marginLeft: "auto" }}
+          onClick={handleExpandClick}
+          aria-expanded={expanded}
+          aria-label="show more"
+        >
+          <ExpandMoreIcon />
+        </IconButton>
+      </CardActions>
+      <Collapse in={expanded} timeout="auto" unmountOnExit>
+        <CardContent>
+          <Typography variant="h6" paragraph>
+            Ingredients:
+          </Typography>
+          <ul>
+            {ingredients.map((el, index) => (
+              <Typography key={index} component="li">
+                {el}
+              </Typography>
+            ))}
+          </ul>
+          <Typography variant="h6" paragraph>
+            Method:
+          </Typography>
+          <Typography>{drink.strInstructions}</Typography>
+        </CardContent>
+      </Collapse>
+    </Card>
+  )
+}
 
 const MyDrinks = () => {
   const [drinks, setDrinks] = useState(getDrinks)
@@ -29,35 +113,11 @@ const MyDrinks = () => {
       >
         {hasDrinks &&
           drinks.map(drink => (
-            <Card
+            <CocktailCard
               key={drink.idDrink}
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                marginBottom: 30,
-              }}
-            >
-              <CardMedia
-                image={drink.strDrinkThumb}
-                style={{ height: 150, width: 150 }}
-              />
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  width: "70%",
-                }}
-              >
-                <CardHeader title={drink.strDrink} />
-                <div>
-                  <IconButton onClick={() => onRemove(drink.idDrink)}>
-                    <DeleteIcon style={{ fontSize: 30 }} />
-                  </IconButton>
-                </div>
-              </div>
-            </Card>
+              drink={drink}
+              onRemove={onRemove}
+            />
           ))}
         {!hasDrinks && (
           <div

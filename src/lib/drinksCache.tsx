@@ -3,7 +3,7 @@ import lscache from "lscache"
 const DRINKS_KEYS = "drinks"
 
 export function addDrink(drink: Object) {
-  // Make sure we don't add the same book multiple times
+  // Make sure we don't add the same drink multiple times
   if (isNotDuplicate(drink.idDrink)) {
     const drinks = [drink, ...getDrinks()]
     setDrinks(drinks)

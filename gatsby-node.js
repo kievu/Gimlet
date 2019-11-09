@@ -4,6 +4,7 @@ const crypto = require("crypto")
 
 const COCKTAIL_URL = "https://the-cocktail-db.p.rapidapi.com/filter.php"
 const RAPID_KEY = "779a08030emsh1193045f61367d3p18df3ajsnaeaf82fef197"
+const COCKTAIL_LOOKUP_URL = "https://the-cocktail-db.p.rapidapi.com/lookup.php"
 
 exports.sourceNodes = async ({ actions }) => {
   const { createNode } = actions
@@ -12,7 +13,18 @@ exports.sourceNodes = async ({ actions }) => {
   })
   // Process response into nodes.
   const { drinks } = await response.json()
-  drinks.forEach(drink =>
+
+  const allDrinks = await Promise.all(
+    drinks.map(async drink => {
+      const res = await fetch(`${COCKTAIL_LOOKUP_URL}?i=${drink.idDrink}`, {
+        headers: { "X-RapidAPI-Key": RAPID_KEY },
+      })
+      const { drinks } = await res.json()
+      return drinks[0]
+    })
+  )
+
+  allDrinks.forEach(drink =>
     createNode({
       ...drink,
       id: drink.idDrink,
@@ -26,6 +38,4 @@ exports.sourceNodes = async ({ actions }) => {
       },
     })
   )
-
-  return
 }
