@@ -19,12 +19,14 @@ const Title = styled("div")`
   justify-content: center;
 `
 
+const AMOUNT_DRINKS = 20
+
 const IndexPage = ({
   data: {
     allDrink: { nodes: drinks },
   },
 }) => {
-  const randomDrinks = sampleSize(drinks, 20)
+  const randomDrinks = sampleSize(drinks, AMOUNT_DRINKS)
 
   return (
     <>
