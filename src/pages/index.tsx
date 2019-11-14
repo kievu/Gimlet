@@ -50,20 +50,10 @@ export const pageQuery = graphql`
         idDrink
         strDrink
         strDrinkThumb
-        strIngredient1
-        strIngredient10
         strAlcoholic
         strCategory
-        strCreativeCommonsConfirmed
-        strDrinkDE
-        strDrinkES
-        strDrinkFR
-        strDrinkZH_HANS
-        strDrinkZH_HANT
         strGlass
-        strIBA
-        strIngredient11
-        strIngredient12
+        strIngredient1
         strIngredient2
         strIngredient3
         strIngredient4
@@ -72,21 +62,10 @@ export const pageQuery = graphql`
         strIngredient7
         strIngredient8
         strIngredient9
+        strIngredient10
+        strIngredient11
+        strIngredient12
         strInstructions
-        strInstructionsDE
-        strMeasure1
-        strMeasure10
-        strMeasure11
-        strMeasure12
-        strMeasure2
-        strMeasure3
-        strMeasure4
-        strMeasure5
-        strMeasure6
-        strMeasure7
-        strMeasure8
-        strMeasure9
-        strTags
       }
     }
   }
